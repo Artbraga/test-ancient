@@ -1,10 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GraphqlService } from './services/graphql.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'test-ancient';
+export class AppComponent implements OnInit {
+  user: any;
+  constructor(private service: GraphqlService) {
+
+  }
+
+  ngOnInit(): void {
+    this.service.getUser().subscribe(data => {
+      this.user = data;
+    });
+  }
+
+  logar(){
+    location.href = "https://api-staging.csgoroll.com/auth/steam?redirectUri=http://localhost:4200";
+  }
+
+  getWallet() {
+    return (<any[]>this.user.wallets).reduce((acc, x) => acc += x.amount, 0)
+  }
 }
