@@ -20,6 +20,10 @@
     <app-detail-box [box]="box"></app-detail-box>
   </div>
   <div class="modal-footer">
+    <div>
+      <label for="quantity">Quantity (max 10):</label>
+      <input type="number" id="quantity" name="quantity" min="1" max="10" [(ngModel)]="quantity">
+    </div>
     <button type="button" class="btn btn-outline-dark" (click)="buyBox(modal)">Open</button>
   </div>
 </ng-template>

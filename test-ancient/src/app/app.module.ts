@@ -10,6 +10,7 @@ import { BoxItemComponent } from './box-item/box-item.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DetailBoxComponent } from './detail-box/detail-box.component';
 import { ToastsContainer } from './toasts/toasts.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ToastsContainer } from './toasts/toasts.component';
     AppRoutingModule,
     GraphQLModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
