@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
+import { Apollo, gql, QueryRef } from 'apollo-angular';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from "rxjs/operators";
 
 const GET_USER = gql`
@@ -30,28 +30,41 @@ const GET_BOXES = gql`
   }
 }
 `;
-// const OPEN_BOX = gql`
-// {
-//   mutation OpenBox($input: OpenBoxInput!) {
-//     openBox(input: $input) {
-//       boxOpenings {
-//         id
-//         itemVariant {
-//           id
-//           name
-//           value
-//         }
-//       }
-//     }
-//   }
-// }
-// `;
+const OPEN_BOX = gql`
+  mutation OpenBox($input: OpenBoxInput!) {
+    openBox(input: $input) {
+      boxOpenings {
+        id
+        itemVariant {
+          id
+          name
+          value
+        }
+      }
+    }
+  }
+`;
+
+const UPDATE_WALLET_SUBSCRIPTION = gql`
+  subscription OnUpdateWallet {
+    updateWallet {
+      wallet {
+        id
+        amount
+        name
+      }
+    }
+  }
+`;
 
 @Injectable({
   providedIn: 'root',
 })
 export class GraphqlService {
-  constructor(private apollo: Apollo) {}
+  public user = new BehaviorSubject<any>(null);
+
+  constructor(private apollo: Apollo) {
+  }
 
   public getBoxes(): Observable<any> {
     return this.apollo
@@ -61,11 +74,28 @@ export class GraphqlService {
     .valueChanges.pipe(map(result => result.data.boxes.edges));
   }
 
-  public getUser(): Observable<any> {
-    return this.apollo
+  public updateUser(): Observable<any> {
+    let queryRef = this.apollo
     .watchQuery<any>({
       query: GET_USER
+    });
+    return queryRef.valueChanges.pipe(map(result => {
+      this.user.next(result.data.currentUser);
+      queryRef.subscribeToMore({
+        document: UPDATE_WALLET_SUBSCRIPTION,
+        updateQuery:(prev, {subscriptionData})  => {
+            console.log(subscriptionData.data);
+        }
+      });
+    }));
+  }
+
+  public openBox(input: {boxId: string, amount: number}) {
+    return this.apollo.mutate({
+      mutation: OPEN_BOX,
+      variables: {
+        input: input
+      }
     })
-    .valueChanges.pipe(map(result => result.data.currentUser));
   }
 }

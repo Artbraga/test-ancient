@@ -1,14 +1,16 @@
 <div class="header">
+  <h2>Test Ancient Gaming</h2>
   <ng-container *ngIf="user == null">
-    <button (click)="logar()">Logar</button>
+    <button (click)="logar()" class="btn btn-primary">Logar</button>
   </ng-container>
-  <ng-container *ngIf="user != null">
+  <div *ngIf="user != null">
     <span>User: {{user.name}}</span>
     <span>Wallet: {{getWallet()}}</span>
-  </ng-container>
+  </div>
 </div>
 <div class="body">
   <ng-container *ngIf="user != null">
     <app-list-boxes></app-list-boxes>
   </ng-container>
+  <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
 </div>

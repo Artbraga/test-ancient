@@ -13,9 +13,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.getUser().subscribe(data => {
+    this.service.user.subscribe(data => {
       this.user = data;
     });
+    this.service.updateUser().subscribe();
   }
 
   logar(){

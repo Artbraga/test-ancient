@@ -1,8 +1,8 @@
 .list-boxes {
   display: flex;
   flex-flow: row wrap;
-
   .box-item {
-    width: 20%;
+    width: calc(20% - 20px);
+    margin: 20px 10px;
   }
 }

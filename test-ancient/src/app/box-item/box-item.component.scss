@@ -2,7 +2,20 @@
   width: 200px;
   height: 200px;
   display: grid;
+  padding: 10px;
   img {
-    max-height: 150px;
+    height: 150px;
+    margin: auto;
+  }
+  .bottom {
+    display: flex;
+    padding: 5px;
+    .text {
+      display: grid;
+    }
+    button {
+      margin-left: auto;
+      max-height: 40px;
+    }
   }
 }
